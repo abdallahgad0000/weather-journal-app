@@ -12,7 +12,6 @@ function makeUrl(zip) {
 let d = new Date();
 let newDate = d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
 
-
 // POST function that add data to the app
 const postData = async (url = "", data = {}) => {
   const response = fetch(url, {
@@ -31,7 +30,6 @@ const postData = async (url = "", data = {}) => {
   }
 };
 
-
 // GET function that get data from the app
 const getData = async (url = "") => {
   const response = fetch(url);
@@ -44,7 +42,6 @@ const getData = async (url = "") => {
   }
 };
 
-
 // function that update the ui of index.html by the last element added to the app
 const updateUi = async () => {
   let data = await getData("/getDate");
@@ -56,29 +53,35 @@ const updateUi = async () => {
 
 // function that update the ui of index.html to add the new weather data
 const updateWeather = async (data) => {
-  document.getElementById("weatherResults").innerHTML =`
+  document.getElementById("weatherResults").innerHTML = `
     <p>country: usa</p>
     <p>city: ${data.name}</p>
     <p>temperature: ${data.main.temp}</p>
     <p>weather description: ${data.weather[0].description}</p>
   `;
-}
-
+};
 
 //  an event listener for the element with the id: generate, with a callback function to execute when it is clicked
 document.getElementById("generate").addEventListener("click", async () => {
   let zip = document.getElementById("zip").value;
   let data = await getData(makeUrl(zip)).then(async (data) => {
-
-    let feelings = document.getElementById("feelings").value;
-    postData("/addData", {
-      temperature: ` temperature: ${data.main.temp}`,
-      userResponse: ` user feelings: ${feelings}`,
-      date:` date: ${newDate}`,
-    }).then(()=>{
-      updateUi();
-      updateWeather(data);
-    });
-    
+    if (data != undefined) {
+      if (data.message) {
+        document.getElementById("msg").innerHTML = `${data.message}`;
+      } else {
+        document.getElementById("msg").innerHTML =``;
+        let feelings = document.getElementById("feelings").value;
+        postData("/addData", {
+          temperature: ` temperature: ${data.main.temp}`,
+          userResponse: ` user feelings: ${feelings}`,
+          date: ` date: ${newDate}`,
+        }).then(() => {
+          updateUi();
+          updateWeather(data);
+        });
+      }
+    } else {
+      document.getElementById("msg").innerHTML = `can't fetch the data `;
+    }
   });
 });

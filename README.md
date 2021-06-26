@@ -12,3 +12,11 @@ This project requires you to create an asynchronous web app that uses Web API an
     1- making a local server
     2- be familiar with api
     3- how to make asynchronous web app
+
+# Instruction to run the app
+    1- open node server by typing in cmd node server.js
+    2- go to localhost:8000
+    3- enter a valid USA zip code
+    4- enter your feelings 
+    5- click generate
+    6- Wait until fetch the data  
