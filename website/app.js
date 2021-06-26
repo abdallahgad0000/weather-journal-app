@@ -54,6 +54,16 @@ const updateUi = async () => {
     data[data.length - 1].userResponse;
 };
 
+// function that update the ui of index.html to add the new weather data
+const updateWeather = async (data) => {
+  document.getElementById("weatherResults").innerHTML =`
+    <p>country: usa</p>
+    <p>city: ${data.name}</p>
+    <p>temperature: ${data.main.temp}</p>
+    <p>weather description: ${data.weather[0].description}</p>
+  `;
+}
+
 
 //  an event listener for the element with the id: generate, with a callback function to execute when it is clicked
 document.getElementById("generate").addEventListener("click", async () => {
@@ -62,10 +72,13 @@ document.getElementById("generate").addEventListener("click", async () => {
 
     let feelings = document.getElementById("feelings").value;
     postData("/addData", {
-      temperature: `${data.main.temp}`,
-      userResponse: `${feelings}`,
-      date: newDate,
-    }).then(updateUi);
+      temperature: ` temperature: ${data.main.temp}`,
+      userResponse: ` user feelings: ${feelings}`,
+      date:` date: ${newDate}`,
+    }).then(()=>{
+      updateUi();
+      updateWeather(data);
+    });
     
   });
 });
