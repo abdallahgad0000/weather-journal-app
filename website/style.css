@@ -42,7 +42,7 @@ body{
 }
 
 .headline {
-
+    position: relative;
 }
 .title{
 
@@ -110,3 +110,9 @@ button:focus {
     font-family: 'Oswald', sans-serif;
 
 } 
+
+#currentDate{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}

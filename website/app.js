@@ -1,16 +1,21 @@
 /* Global Variables */
 // api base url
-let baseUrl = "api.openweathermap.org/data/2.5/weather";
-let apiKey = "3e9bffd00fec0d486931f5a262fe57fb";
+const baseUrl = "api.openweathermap.org/data/2.5/weather";
+const apiKey = "3e9bffd00fec0d486931f5a262fe57fb";
 
 // function that makes the url dynamically
 function makeUrl(zip) {
-  return `http://${baseUrl}?zip=${zip},us&appid=${apiKey}`;
+  return `http://${baseUrl}?zip=${zip},us&appid=${apiKey}&units=metric`;
 }
 
 // Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
+let newDate = d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear();
+
+// self invoked function that display current date 
+(()=>{
+  document.getElementById("currentDate").innerHTML = `current date: ${newDate}`;
+})();
 
 // POST function that add data to the app
 const postData = async (url = "", data = {}) => {
@@ -46,7 +51,7 @@ const getData = async (url = "") => {
 const updateUi = async () => {
   let data = await getData("/getDate");
   document.getElementById("date").innerHTML = data[data.length - 1].date;
-  document.getElementById("temp").innerHTML = data[data.length - 1].temperature;
+  document.getElementById("temp").innerHTML = data[data.length - 1].temperature +"°C";
   document.getElementById("content").innerHTML =
     data[data.length - 1].userResponse;
 };
@@ -56,7 +61,7 @@ const updateWeather = async (data) => {
   document.getElementById("weatherResults").innerHTML = `
     <p>country: usa</p>
     <p>city: ${data.name}</p>
-    <p>temperature: ${data.main.temp}</p>
+    <p>temperature: ${data.main.temp} °C </p>
     <p>weather description: ${data.weather[0].description}</p>
   `;
 };
